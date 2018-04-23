@@ -12,12 +12,12 @@ const Template = require('./TemplateMessage.js')
 class Sender {
     constructor(config, recipient_id) {
         config = config || {}
-        if (!config.access_token) logger.error('No access token provided in Incredbot Sender instance!')
 
         this.access_token = config.access_token
         this.recipient_id = recipient_id || null
-        this.api_version = config.api_version || 'v2.11'
+        this.api_version = config.api_version
         this.api_url = `https://graph.facebook.com/${this.api_version}/me/messages?access_token=${this.access_token}`
+        this.setting_url = `https://graph.facebook.com/${this.api_version}/me/messenger_profile?access_token=${this.access_token}`
     }
 
     raw(message) {
@@ -73,6 +73,27 @@ class Sender {
 
         let message = new Template(options)
 
+        return this.raw(message)
+    }
+
+    setting(data) {
+        return new Promise((resolve, reject) => {
+            axios.post(this.setting_url, data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    }
+
+    generic(elements, options) {
+        options = options || {}
+        options.recipient_id = this.recipient_id || options.recipient_id
+        options.generics = elements
+
+        let message = new Template(options)
         return this.raw(message)
     }
 }

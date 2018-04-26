@@ -40,15 +40,7 @@ class Sender {
         options.recipient_id = this.recipient_id || options.recipient_id
         let message = new Message(options)
 
-        return new Promise((resolve, reject) => {
-            axios.post(this.api_url, message)
-                .then(res => {
-                    resolve(res)
-                })
-                .catch(err => {
-                    reject(err)
-                })
-        })
+        return this.raw(message)
     }
 
     quick_replies(text, replies, options) {

@@ -16,7 +16,7 @@ class Incredbot {
     }
 
     User(messenger_id) {
-        return new User(messenger_id, this.config)
+        return new User(messenger_id, this.config, new Sender(this.config, messenger_id))
     }
 }
 

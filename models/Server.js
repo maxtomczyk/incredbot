@@ -49,12 +49,13 @@ class Server {
 
                     if (entry.messaging) {
                         entry.messaging.forEach(message => {
-                            if (message.message.is_echo) {
+                            if (message.message && message.message.is_echo) {
                                 let m = {}
                                 m.text = message.message.text
                                 m.app_id = message.message.app_id
                                 m.timestamp = message.timestamp
                                 m.recipient_id = message.recipient.id
+                                m.reply = new Sender(that.config, message.recipient.id)
                                 emitter.emit('echo', m, message)
                                 return
                             }

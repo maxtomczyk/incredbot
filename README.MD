@@ -39,6 +39,7 @@ Server always returns status 200 to facebook!
 | payload     | Any payload received (button or quick reply)            |
 | postback    | Payload from button reveived                            |
 | quick_reply | Payload from quick reply received                       |
+| echo        | On any message sent by bot                              |
 
 ### Simple hello world
 
@@ -53,15 +54,18 @@ bot.on('text', async (message, raw) => {
 ```
 
 ### Message object
+
 First parameter passed to event function is custom object created by incredbot server, if you need raw data from facebook it's passed as second parameter.
 
 #### Message object properties
-* sender_id
-* timestamp
-* payload (if message contain any payload)
-* reply (Incredbot sender object with setted user_id to use it without user_id parameter)
+
+-   sender_id
+-   timestamp
+-   payload (if message contain any payload)
+-   reply (Incredbot sender object with setted user_id to use it without user_id parameter)
 
 ## Sender
+
 ```javascript
 incredbot.send.METHOD()
 // OR
@@ -77,13 +81,17 @@ All examples below are presented as replying to message
 ### Methods
 
 #### `text(message, options)`
+
 Sends text to client
+
 ```javascript
 await message.reply.text('Your message')
 ```
 
 #### `quick_replies(message, replies, options)`
+
 Sends quick replies to client.
+
 ```javascript
 let qrs = [
   new bot.Helpers.QuickReply('text', 'Yes', 'ANSWER_YES')
@@ -93,7 +101,9 @@ await message.reply.quick_replies('Your message', qrs)
 ```
 
 #### `buttons(text, buttons, options)`
+
 Sends buttons template to user
+
 ```javascript
 let buttons = [
   new bot.Helpers.Button('postback', 'Some postback', 'POSTBACK')

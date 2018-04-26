@@ -49,6 +49,16 @@ class Server {
 
                     if (entry.messaging) {
                         entry.messaging.forEach(message => {
+                            if (message.message.is_echo) {
+                                let m = {}
+                                m.text = message.message.text
+                                m.app_id = message.message.app_id
+                                m.timestamp = message.timestamp
+                                m.recipient_id = message.recipient.id
+                                emitter.emit('echo', m, message)
+                                return
+                            }
+
                             let m = {}
                             m.sender_id = message.sender.id
                             m.reply = new Sender(that.config, message.sender.id)

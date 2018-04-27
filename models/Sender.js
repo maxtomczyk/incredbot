@@ -8,6 +8,7 @@ const logger = require('eazy-logger').Logger({
 
 const Message = require('./Message.js')
 const Template = require('./TemplateMessage.js')
+const Attachment = require('./AttachmentMessage.js')
 
 class Sender {
     constructor(config, recipient_id) {
@@ -86,6 +87,17 @@ class Sender {
         options.generics = elements
 
         let message = new Template(options)
+        return this.raw(message)
+    }
+
+    attachment(type, url, options) {
+        options = options || {}
+        options.recipient_id = this.recipient_id || options.recipient_id
+        options.is_reusable = options.is_reusable || true
+        options.url = url
+        options.type = type
+
+        let message = new Attachment(options)
         return this.raw(message)
     }
 }

@@ -9,6 +9,7 @@ const logger = require('eazy-logger').Logger({
 const Message = require('./Message.js')
 const Template = require('./TemplateMessage.js')
 const Attachment = require('./AttachmentMessage.js')
+const Typer = require('./Typer.js')
 
 class Sender {
     constructor(config, recipient_id) {
@@ -19,9 +20,13 @@ class Sender {
         this.api_version = config.api_version
         this.api_url = `https://graph.facebook.com/${this.api_version}/me/messages?access_token=${this.access_token}`
         this.setting_url = `https://graph.facebook.com/${this.api_version}/me/messenger_profile?access_token=${this.access_token}`
+        this.natural_typing = config.natural_typing || true
+        this.natural_typing_speed = config.natural_typing_speed || 50
+        this.typing = new Typer(config)
     }
 
-    raw(message) {
+    async raw(message) {
+      if(message.message.text) await this.typing.on(message.recipient.id, this.calculateTypingTime(message.message.text))
         return new Promise((resolve, reject) => {
             axios.post(this.api_url, message)
                 .then(res => {
@@ -31,6 +36,13 @@ class Sender {
                     reject(err)
                 })
         })
+    }
+
+    calculateTypingTime(text) {
+        const cps = this.natural_typing_speed
+        let time = Math.round((text.length / cps) * 1000)
+        if (time < 5000) return time
+        else return 5000
     }
 
     text(text, options) {

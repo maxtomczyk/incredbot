@@ -26,7 +26,7 @@ class Sender {
     }
 
     async raw(message) {
-      if(message.message.text) await this.typing.on(message.recipient.id, this.calculateTypingTime(message.message.text))
+      if(message.message.text && this.natural_typing) await this.typing.on(message.recipient.id, this.calculateTypingTime(message.message.text))
         return new Promise((resolve, reject) => {
             axios.post(this.api_url, message)
                 .then(res => {

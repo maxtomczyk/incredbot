@@ -1,5 +1,7 @@
 # Incredbot
 
+IMPORTANT! This is very early version and it's still under construction.
+
 Incredbot is splited into two parts: server (receiving requests from facebook messenger) and sender (sending requests to messenger api)
 
 ## Including
@@ -34,6 +36,7 @@ Server always returns status 200 to facebook!
 
 | Event       | When                                                    |
 | ----------- | ------------------------------------------------------- |
+| entry       | Emmited on each entry in received object                |
 | message     | Any message received                                    |
 | text        | Text message received (media messages in early version) |
 | payload     | Any payload received (button or quick reply)            |
@@ -63,6 +66,19 @@ First parameter passed to event function is custom object created by incredbot s
 -   timestamp
 -   payload (if message contain any payload)
 -   reply (Incredbot sender object with setted user_id to use it without user_id parameter)
+
+## Natural typing
+
+Incredbot by default sets timeout to your messages that contiant text and displays typing animation to client. This feature is turned on by default and can be configured vie config object passed to Incredbot instance
+
+```javascript
+  let incredbot = new Incredbot({
+    ...
+    natural_typing: true, // default: true
+    natural_typing_speed: 50 // default: 50, chars per second
+    ...
+  })
+```
 
 ## Sender
 
@@ -110,4 +126,138 @@ let buttons = [
   new bot.Helpers.Button('web_url', 'Some link', 'http://example.com')
 ]
 await message.reply.buttons('Your message', buttons)
+```
+
+#### `attachment(type, url, options)`
+
+Sends attachment to user
+
+```javascript
+await message.reply.attachment('image', 'https://example.com/assets/image.png')
+```
+
+#### `generic(elements, options)`
+
+Sends generic template to user.
+
+```javascript
+let buttons = [
+    new bot.Helpers.Button('postback', 'Button no.1', 'PAYLOAD'),
+    new bot.Helpers.Button('web_url', 'Button no.2', 'https://example.com/')
+  ]
+
+let card1 = {
+  title: 'Card One',
+  subtitle: 'Subtitle no. 1',
+  image_url: 'https://example.com/images/1.png',
+  buttons: buttons
+}
+
+let cards = [
+  new bot.Helpers.Generic(card1),
+  new bot.Helpers.Generic('Card Two', 'Subtitle no.2', 'https://example.com/images/2.png', buttons)
+
+]
+await message.reply.generic(cards)
+```
+
+### Sending Greeting
+
+```javascript
+let greeting = new bot.Helpers.Greeting('This is greeting text!')
+await bot.send.setting(greeting)
+```
+
+### Sending Get Started Button
+
+```javascript
+let get_started = new bot.Helpers.GetStartedButton()
+await bot.send.setting(get_started)
+```
+
+### Sending Persistent Menu
+
+Actually, there is not any helper for persistent menu.
+
+```javascript
+let menu = {
+    persistent_menu: [{
+        locale: "default",
+        call_to_actions: [{
+            title: "Options",
+            type: "postback",
+            payload: "OPTIONS"
+        }]
+    }]
+}
+
+await bot.send.setting(menu)
+```
+
+## Helpers
+
+### Button
+
+Actually, this helper supports following types of buttons:
+
+-   postback
+-   web_url
+-   phone_number
+-   element_share
+
+`new incredbot.Helpers.Button(type, title, payload)`
+
+```javascript
+  let postback = new incredbot.Helpers.Button('postback', 'Send Payload', 'PAYLOAD')
+  let web_url = new incredbot.Helpers.Button('web_url', 'Go', 'https://example.com/')
+  let phone_number = new incredbot.Helpers.Button('phone_number', 'Call Us', '+15105559999')
+  let share = new incredbot.Helpers.Button('element_share')
+```
+
+### Generic
+
+As first argument of generic message helper you can pass object or string.
+
+`new bot.Helpers.Generic(title, subtitle, image_url, buttons, default_action)`
+
+```javascript
+let card1 = {
+  title: 'Card One',
+  subtitle: 'Subtitle no. 1',
+  image_url: 'https://example.com/images/1.png',
+  buttons: [...]
+}
+
+let cards = [
+  new bot.Helpers.Generic(card1),
+  new bot.Helpers.Generic('Card Two', 'Subtitle no.2', 'image_url', buttons)
+]
+```
+
+### Get Started Button
+
+As argument you can pass own paylod, default payload is 'GET_STARTED'.
+
+`new bot.Helpers.GetStartedButton(payload)`
+
+```javascript
+let get_started = new bot.Helpers.GetStartedButton('OWN_PAYLOAD')
+```
+
+### Greeting
+
+You can pass locale string as second argument, default locale string: default
+
+`new bot.Helpers.Greeting(text, locale)`
+
+```javascript
+let greeting = new bot.Helpers.Greeting('Greeting text', 'zh_CN')
+```
+
+### Quick Reply
+
+`new bot.Helpers.QuickReply(type, title, payload, image_url)`
+
+```javascript
+let qr = new bot.Helpers.QuickReply('text', 'Start!', 'START')
 ```

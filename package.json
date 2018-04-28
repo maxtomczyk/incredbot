@@ -9,6 +9,7 @@
   "author": "Maksymilian Tomczyk <m.tomczyk@incredbots.com>",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "eazy-logger": "^3.0.2",
     "express": "^4.16.3",

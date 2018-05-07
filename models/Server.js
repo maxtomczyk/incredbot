@@ -68,7 +68,14 @@ class Server {
 
                             emitter.emit('message', m, message)
 
-                            if (!message.message && message.postback) {
+                            if (message.message && message.message.attachments) {
+                                message.message.attachments.map(attachment => {
+                                    if (attachment.type === 'location') {
+                                        m.location = attachment.payload.coordinates
+                                        emitter.emit('location', m, message)
+                                    }
+                                })
+                            } else if (!message.message && message.postback) {
                                 m.payload = message.postback.payload
                                 emitter.emit('postback', m, message)
                                 emitter.emit('payload', m, message)

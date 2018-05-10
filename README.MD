@@ -7,7 +7,7 @@ Incredbot is splited into two parts: server (receiving requests from facebook me
 ## Including
 
 ```javascript
-const Incredbot = require('./modules/incredbot')
+const Incredbot = require('incredbot')
 const incredbot = new Incredbot({
     access_token: config.facebook.access_token
 })

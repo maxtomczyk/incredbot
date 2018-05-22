@@ -74,6 +74,10 @@ class Server {
                                         m.location = attachment.payload.coordinates
                                         emitter.emit('location', m, message)
                                     }
+                                    else if(attachment.type === 'image'){
+                                        m.url = attachment.payload.url
+                                        emitter.emit('image', m, message)
+                                    }
                                 })
                             } else if (!message.message && message.postback) {
                                 m.payload = message.postback.payload

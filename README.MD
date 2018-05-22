@@ -44,6 +44,7 @@ Server always returns status 200 to facebook!
 | quick_reply | Payload from quick reply received                       |
 | echo        | On any message sent by bot                              |
 | location    | Location received                                       |
+| image       | Image received                                          |
 
 ### Simple hello world
 
@@ -68,6 +69,7 @@ First parameter passed to event function is custom object created by incredbot s
 -   payload (if message contain any payload)
 -   reply (Incredbot sender object with setted user_id to use it without user_id parameter)
 -   location (if location event)
+-   url (if media sended)
 
 ## Natural typing
 

@@ -1,3 +1,4 @@
+const isUrl = require('../modules/is_url')
 const logger = require('eazy-logger').Logger({
     prefix: "{blue:[Incredbot-Helpers]}",
     useLevelPrefixes: true
@@ -12,11 +13,12 @@ class Message {
         this.message = {}
         this.message.attachment = {
             type: options.type,
-            payload: {
-                url: options.url,
-                is_reusable: options.is_reusable
-            }
+            payload: {}
         }
+        if (isUrl(options.url)) {
+            this.message.attachment.payload.is_reusable = options.is_reusable
+            this.message.attachment.payload.url = options.url
+        } else this.message.attachment.payload.attachment_id = options.url
     }
 }
 

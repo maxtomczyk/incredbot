@@ -20,6 +20,7 @@ class Message {
             p.template_type = 'button'
             p.text = options.text
             p.buttons = options.buttons
+            if(options.quick_replies) this.message.quick_replies = options.quick_replies
         }
 
         if (options.generics) {

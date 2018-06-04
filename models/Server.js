@@ -73,10 +73,14 @@ class Server {
                                     if (attachment.type === 'location') {
                                         m.location = attachment.payload.coordinates
                                         emitter.emit('location', m, message)
-                                    }
-                                    else if(attachment.type === 'image'){
+                                    } else if (attachment.type === 'image') {
                                         m.url = attachment.payload.url
                                         emitter.emit('image', m, message)
+                                    } else if (attachment.type === 'fallback') {
+                                        m.url = attachment.url
+                                        m.title = attachment.title
+                                        m.payload = attachment.payload
+                                        emitter.emit('fallback', m, message)
                                     }
                                 })
                             } else if (!message.message && message.postback) {

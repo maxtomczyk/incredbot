@@ -46,7 +46,6 @@ class Server {
             if (body.object === 'page') {
                 body.entry.forEach(function(entry) {
                     emitter.emit('entry', entry)
-
                     if (entry.messaging) {
                         entry.messaging.forEach(message => {
                             if (message.message && message.message.is_echo) {
@@ -93,6 +92,22 @@ class Server {
                                 emitter.emit('payload', m, message)
                             } else {
                                 emitter.emit('text', m, message)
+                            }
+                        })
+                    } else if (entry.changes) {
+                        entry.changes.forEach(change => {
+                            emitter.emit('change', change)
+                            let o = {}
+                            o.user = change.value.from,
+                            o.type = change.value.item,
+                            o.created_time = change.value.created_time
+
+                            if (o.type === 'comment') {
+                                o.comment = {
+                                    text: change.value.message,
+                                    id: change.value.comment_id
+                                }
+                                emitter.emit('comment', o, change)
                             }
                         })
                     }

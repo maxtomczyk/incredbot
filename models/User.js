@@ -12,7 +12,7 @@ class User {
       if(!messenger_id) logger.warn('You must pass messenger id of user!')
       this.config = config || {}
       this.messenger_id = messenger_id
-      this.api_url = `https://graph.facebook.com/${config.api_version}/${this.messenger_id}?fields=first_name,last_name,profile_pic,locale,timezone,gender,is_payment_enabled,last_ad_referral&access_token=${config.access_token}`
+      this.api_url = `https://graph.facebook.com/${config.api_version}/${this.messenger_id}?fields=first_name,last_name,profile_pic,locale,timezone,genderl&access_token=${config.access_token}`
       this.send = sender
       this.botanalytics = (this.config.botanalytics) ? Botanalytics.FacebookMessenger(this.config.botanalytics.token) : false
     }

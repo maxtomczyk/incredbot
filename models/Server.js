@@ -43,6 +43,7 @@ class Server {
 
         app.post('/webhook', (req, res) => {
             let body = req.body
+            emitter.emit('request', body, req)
             if (body.object === 'page') {
                 body.entry.forEach(function(entry) {
                     emitter.emit('entry', entry)

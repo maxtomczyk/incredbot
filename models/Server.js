@@ -2,6 +2,7 @@ const randomstring = require('randomstring')
 const express = require('express')
 const bodyParser = require('body-parser')
 const EventEmitter = require('events')
+const Botanalytics = require('botanalytics')
 class Emitter extends EventEmitter {}
 const emitter = new Emitter()
 const logger = require('eazy-logger').Logger({
@@ -21,6 +22,7 @@ class Server {
     constructor(config) {
         this.config = config
         this.verify_token = randomstring.generate(10)
+        this.botanalytics = (this.config.botanalytics) ? Botanalytics.FacebookMessenger(this.config.botanalytics.token) : false
         that = this
     }
 
@@ -43,6 +45,7 @@ class Server {
 
         app.post('/webhook', (req, res) => {
             let body = req.body
+            if(this.botanalytics) this.botanalytics.logIncomingMessage(body);
             emitter.emit('request', body, req)
             if (body.object === 'page') {
                 body.entry.forEach(function(entry) {

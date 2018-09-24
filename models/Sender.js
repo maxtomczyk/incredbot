@@ -19,8 +19,8 @@ class Sender {
         this.access_token = config.access_token
         this.recipient_id = recipient_id || null
         this.api_version = config.api_version
-        this.api_url = `https://graph.facebook.com/${this.api_version}/me/messages?access_token=${this.access_token}`
-        this.setting_url = `https://graph.facebook.com/${this.api_version}/me/messenger_profile?access_token=${this.access_token}`
+        this.api_url = this.config.api_url || `https://graph.facebook.com/${this.api_version}/me/messages?access_token=${this.access_token}`
+        this.setting_url = this.config.setting_url || `https://graph.facebook.com/${this.api_version}/me/messenger_profile?access_token=${this.access_token}`
         this.natural_typing = config.natural_typing || true
         this.natural_typing_speed = config.natural_typing_speed || 50
         this.typing = new Typer(config)

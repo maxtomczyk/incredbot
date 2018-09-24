@@ -2,7 +2,7 @@ const axios = require('axios')
 
 class Typer {
     constructor(options) {
-        this.api_url = `https://graph.facebook.com/${options.api_version}/me/messages?access_token=${options.access_token}`
+        this.api_url = options.api_url || `https://graph.facebook.com/${options.api_version}/me/messages?access_token=${options.access_token}`
     }
 
     on(id, time) {

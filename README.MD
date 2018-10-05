@@ -265,3 +265,15 @@ let greeting = new bot.Helpers.Greeting('Greeting text', 'zh_CN')
 ```javascript
 let qr = new bot.Helpers.QuickReply('text', 'Start!', 'START')
 ```
+
+## User's data
+
+You can fetch user data with user id
+
+`incredbot.User(this.data.messenger_id).getData(...fields)`
+
+```javascript
+let data = awiat incredbot.User(this.data.messenger_id).getData('first_name', 'last_name', 'id')
+```
+
+Remember that for some fields like gender you need special permissions from facebook, unless your request will fail with status code 400!

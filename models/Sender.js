@@ -1,10 +1,6 @@
 const axios = require('axios')
 
-const logger = require('eazy-logger').Logger({
-    prefix: "{blue:[Incredbot-Sender]}",
-    useLevelPrefixes: true,
-    level: 'warn'
-})
+const logger = require('../modules/winston')
 
 const Message = require('./Message.js')
 const Template = require('./TemplateMessage.js')

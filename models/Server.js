@@ -5,10 +5,8 @@ const EventEmitter = require('events')
 const Botanalytics = require('botanalytics')
 class Emitter extends EventEmitter {}
 const emitter = new Emitter()
-const logger = require('eazy-logger').Logger({
-    prefix: "{blue:[Incredbot-Server]}",
-    useLevelPrefixes: true
-})
+const logger = require('../modules/winston')
+
 const Sender = require('./Sender.js')
 const app = express()
 app.use(bodyParser.urlencoded({

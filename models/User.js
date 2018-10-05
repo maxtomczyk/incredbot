@@ -1,10 +1,7 @@
 const axios = require('axios')
 const Botanalytics = require('botanalytics');
 
-const logger = require('eazy-logger').Logger({
-    prefix: "{blue:[Incredbot-User]}",
-    useLevelPrefixes: true
-})
+const logger = require('../modules/winston')
 
 class User {
     constructor(messenger_id, config, sender) {
@@ -35,7 +32,6 @@ class User {
 
             return data.data
         } catch (e) {
-            console.error(e.response.data);
             logger.error(e)
         }
     }

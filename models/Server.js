@@ -32,7 +32,7 @@ class Server {
 
             if (mode && token) {
                 if (mode === 'subscribe' && token === this.verify_token) {
-                    logger.log('Webhook connected!')
+                    logger.info('Webhook connected!')
                     res.status(200).send(challenge)
                 } else {
                     logger.warn('Webhook connect try with incorrect token.')

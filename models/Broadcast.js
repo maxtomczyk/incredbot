@@ -8,13 +8,20 @@ class Broadcast {
         this.broadcast_url = `https://graph.facebook.com/${options.api_version}/me/broadcast_messages?access_token=${options.access_token}`
     }
 
-    async createCreative(message){
+    async create(messages) {
         try {
-
+            if (!Array.isArray(messages)) {
+                messages = [messages]
+            }
+            const data = await axios.post(this.creatives_url, {
+                messages
+            })
+            return data.data.message_creative_id
         } catch (e) {
             logger.error(e)
+            throw e
         }
     }
 }
 
-module.exports = Typer
+module.exports = Broadcast

@@ -5,6 +5,7 @@ const User = require('./models/User.js')
 const Typer = require('./models/Typer.js')
 const Uploader = require('./models/Uploader.js')
 const MessageGenerator = require('./models/Generator.js')
+const Broadcast = require('./models/Broadcast.js')
 
 class Incredbot {
     constructor(config) {
@@ -19,6 +20,7 @@ class Incredbot {
         this.Typer = new Typer(config)
         this.upload = new Uploader(config)
         this.Message = new MessageGenerator(config)
+        this.broadcast = new Broadcast(config)
     }
 
     User(messenger_id) {

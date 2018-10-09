@@ -176,6 +176,18 @@ class Broadcast {
             throw e
         }
     }
+
+    async getMetrics(broadcastId){
+      try {
+        if (!broadcastId) throw new Error(`You must pass broadcast id of broadcast to get it's metrics`)
+
+        const data = await axios.get(`https://graph.facebook.com/v2.11/${broadcastId}/insights/messages_sent?access_token=${this.access_token}`)
+        return data.data
+      } catch (e) {
+          logger.error(e)
+          throw e
+      }
+    }
 }
 
 module.exports = Broadcast

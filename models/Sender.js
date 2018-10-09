@@ -5,6 +5,7 @@ const Message = require('./Message.js')
 const MessageFrame = require('./MessageFrame.js')
 const MessageBase = require('./MessageBase.js')
 const Template = require('./TemplateMessage.js')
+const TemplateBase = require('./TemplateBase.js')
 const Attachment = require('./AttachmentMessage.js')
 const Typer = require('./Typer.js')
 
@@ -68,14 +69,16 @@ class Sender {
         return this.raw(message)
     }
 
-    buttons(text, buttons, options) {
+    buttons(text, buttons, replies, options) {
         if (!text) return logger.error('Message text can\'t be empty!')
         options = options || {}
+        if(!Array.isArray(replies)) options = replies
+        else options.quick_replies = replies
         options.text = text
         options.recipient_id = this.recipient_id || options.recipient_id
         options.buttons = buttons
 
-        let message = new Template(options)
+        let message = new MessageFrame(new TemplateBase(options), options)
 
         return this.raw(message)
     }
@@ -97,7 +100,8 @@ class Sender {
         options.recipient_id = this.recipient_id || options.recipient_id
         options.generics = elements
 
-        let message = new Template(options)
+        let message = new MessageFrame(new TemplateBase(options), options)
+
         return this.raw(message)
     }
 

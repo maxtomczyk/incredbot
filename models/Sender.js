@@ -1,12 +1,12 @@
 const axios = require('axios')
-
+const Botanalytics = require('botanalytics');
 const logger = require('../modules/winston')
-
 const Message = require('./Message.js')
+const MessageFrame = require('./MessageFrame.js')
+const MessageBase = require('./MessageBase.js')
 const Template = require('./TemplateMessage.js')
 const Attachment = require('./AttachmentMessage.js')
 const Typer = require('./Typer.js')
-const Botanalytics = require('botanalytics');
 
 class Sender {
     constructor(config, recipient_id) {
@@ -50,7 +50,7 @@ class Sender {
         options = options || {}
         options.text = text
         options.recipient_id = this.recipient_id || options.recipient_id
-        let message = new Message(options)
+        let message = new MessageFrame(new MessageBase(options), options)
 
         return this.raw(message)
     }
@@ -63,7 +63,7 @@ class Sender {
         options.recipient_id = this.recipient_id || options.recipient_id
         options.replies = replies
 
-        let message = new Message(options)
+        let message = new MessageFrame(new MessageBase(options), options)
 
         return this.raw(message)
     }

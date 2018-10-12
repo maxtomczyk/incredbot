@@ -1,12 +1,5 @@
-const QuickReply = require('./helpers/QuickReply.js')
-const Button = require('./helpers/Button.js')
-const GetStartedButton = require('./helpers/GetStartedButton.js')
-const Greeting = require('./helpers/Greeting.js')
-const Generic = require('./helpers/Generic.js')
 const MessageBase = require('./MessageBase.js')
 const TemplateBase = require('./TemplateBase.js')
-
-const logger = require('../modules/winston.js')
 
 class Text extends MessageBase {
     constructor(text, options) {
@@ -36,11 +29,20 @@ class Buttons extends TemplateBase {
     }
 }
 
+class Generic extends TemplateBase {
+    constructor(elements, options) {
+        options = options || {}
+        options.generics = elements
+        super(options)
+    }
+}
+
 class Generator {
     constructor(options) {
         this.Text = Text
         this.QuickReplies = QuickReplies
         this.Buttons = Buttons
+        this.Generic = Generic
     }
 }
 

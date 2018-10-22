@@ -70,7 +70,7 @@ class Sender {
     buttons(text, buttons, replies, options) {
         if (!text) return logger.error('Message text can\'t be empty!')
         options = options || {}
-        if(!Array.isArray(replies)) options = replies
+        if(!Array.isArray(replies)) options = replies || options
         else options.quick_replies = replies
         options.text = text
         options.recipient_id = this.recipient_id || options.recipient_id

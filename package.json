@@ -1,6 +1,6 @@
 {
   "name": "incredbot",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "An incredible library for creating incredible bots.",
   "main": "index.js",
   "scripts": {

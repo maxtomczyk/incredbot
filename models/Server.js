@@ -7,6 +7,8 @@ const emitter = new Emitter()
 const logger = require('../modules/winston')
 
 const Sender = require('./Sender.js')
+const CommentTools = require('./CommentTools.js')
+
 const app = express()
 app.use(bodyParser.urlencoded({
     extended: false
@@ -106,6 +108,7 @@ class Server {
                                     text: change.value.message,
                                     id: change.value.comment_id
                                 }
+                                o.tools = new CommentTools(that.config, o.comment, o.user)
                                 emitter.emit('comment', o, change)
                             }
                         })

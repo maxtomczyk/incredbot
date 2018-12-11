@@ -1,5 +1,4 @@
 const axios = require('axios')
-const Botanalytics = require('botanalytics');
 const logger = require('../modules/winston')
 const MessageFrame = require('./MessageFrame.js')
 const MessageBase = require('./MessageBase.js')
@@ -19,7 +18,6 @@ class Sender {
         this.natural_typing = config.natural_typing || true
         this.natural_typing_speed = config.natural_typing_speed || 50
         this.typing = new Typer(config)
-        this.botanalytics = (this.config.botanalytics) ? Botanalytics.FacebookMessenger(this.config.botanalytics.token) : false
     }
 
     async raw(message) {
@@ -27,7 +25,6 @@ class Sender {
         return new Promise((resolve, reject) => {
             axios.post(this.api_url, message)
                 .then(res => {
-                    if (this.botanalytics) this.botanalytics.logOutgoingMessage(message.message, message.recipient.id, this.access_token)
                     resolve(res)
                 })
                 .catch(err => {

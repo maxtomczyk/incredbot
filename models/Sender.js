@@ -6,8 +6,10 @@ const TemplateBase = require('./TemplateBase.js')
 const Attachment = require('./AttachmentMessage.js')
 const Typer = require('./Typer.js')
 
+let that = null
+
 class Sender {
-    constructor(config, recipient_id) {
+    constructor(config, recipient_id, emitter) {
         config = config || {}
         this.config = config
         this.access_token = config.access_token
@@ -17,7 +19,9 @@ class Sender {
         this.setting_url = this.config.setting_url || `https://graph.facebook.com/${this.api_version}/me/messenger_profile?access_token=${this.access_token}`
         this.natural_typing = config.natural_typing || true
         this.natural_typing_speed = config.natural_typing_speed || 50
-        this.typing = new Typer(config)
+        this.typing = new Typer(config, emitter)
+        this.emitter = emitter
+        that = this
     }
 
     async raw(message) {
@@ -25,6 +29,8 @@ class Sender {
         return new Promise((resolve, reject) => {
             axios.post(this.api_url, message)
                 .then(res => {
+                    that.emitter.emit('request_outgoing', message, res)
+                    that.emitter.emit('message_sent', message, res)
                     resolve(res)
                 })
                 .catch(err => {
@@ -82,6 +88,7 @@ class Sender {
         return new Promise((resolve, reject) => {
             axios.post(this.setting_url, data)
                 .then(res => {
+                    that.emitter.emit('request_outgoing', data, res)
                     resolve(res)
                 })
                 .catch(err => {

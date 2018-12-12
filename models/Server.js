@@ -1,9 +1,7 @@
 const randomstring = require('randomstring')
 const express = require('express')
 const bodyParser = require('body-parser')
-const EventEmitter = require('events')
-class Emitter extends EventEmitter {}
-const emitter = new Emitter()
+
 const logger = require('../modules/winston')
 
 const Sender = require('./Sender.js')
@@ -18,9 +16,10 @@ app.use(bodyParser.json())
 let that = null
 
 class Server {
-    constructor(config) {
+    constructor(config, emitter) {
         this.config = config
         this.verify_token = randomstring.generate(10)
+        this.emitter = emitter
         that = this
     }
 
@@ -43,10 +42,10 @@ class Server {
 
         app.post('/webhook', (req, res) => {
             let body = req.body
-            emitter.emit('request', body, req)
+            that.emitter.emit('request_incoming', body, req)
             if (body.object === 'page') {
                 body.entry.forEach(function(entry) {
-                    emitter.emit('entry', entry)
+                    that.emitter.emit('entry', entry)
                     if (entry.messaging) {
                         entry.messaging.forEach(message => {
                             if (message.message && message.message.is_echo) {
@@ -55,49 +54,49 @@ class Server {
                                 m.app_id = message.message.app_id
                                 m.timestamp = message.timestamp
                                 m.recipient_id = message.recipient.id
-                                m.reply = new Sender(that.config, message.recipient.id)
-                                emitter.emit('echo', m, message)
+                                m.reply = new Sender(that.config, message.recipient.id, that.emmiter)
+                                that.emitter.emit('echo', m, message)
                                 return
                             }
 
                             let m = {}
                             m.sender_id = message.sender.id
-                            m.reply = new Sender(that.config, message.sender.id)
+                            m.reply = new Sender(that.config, message.sender.id, that.emitter)
                             m.timestamp = message.timestamp
                             if (message.message && message.message.text) m.text = message.message.text
 
-                            emitter.emit('message', m, message)
+                            that.emitter.emit('message', m, message)
 
                             if (message.message && message.message.attachments) {
                                 message.message.attachments.map(attachment => {
                                     if (attachment.type === 'location') {
                                         m.location = attachment.payload.coordinates
-                                        emitter.emit('location', m, message)
+                                        that.emitter.emit('location', m, message)
                                     } else if (attachment.type === 'image') {
                                         m.url = attachment.payload.url
-                                        emitter.emit('image', m, message)
+                                        that.emitter.emit('image', m, message)
                                     } else if (attachment.type === 'fallback') {
                                         m.url = attachment.url
                                         m.title = attachment.title
                                         m.payload = attachment.payload
-                                        emitter.emit('fallback', m, message)
+                                        that.emitter.emit('fallback', m, message)
                                     }
                                 })
                             } else if (!message.message && message.postback) {
                                 m.payload = message.postback.payload
-                                emitter.emit('postback', m, message)
-                                emitter.emit('payload', m, message)
+                                that.emitter.emit('postback', m, message)
+                                that.emitter.emit('payload', m, message)
                             } else if (message.message.quick_reply) {
                                 m.payload = message.message.quick_reply.payload
-                                emitter.emit('quick_reply', m, message)
-                                emitter.emit('payload', m, message)
+                                that.emitter.emit('quick_reply', m, message)
+                                that.emitter.emit('payload', m, message)
                             } else {
-                                emitter.emit('text', m, message)
+                                that.emitter.emit('text', m, message)
                             }
                         })
                     } else if (entry.changes) {
                         entry.changes.forEach(change => {
-                            emitter.emit('change', change)
+                            that.emitter.emit('change', change)
                             let o = {}
                             o.user = change.value.from,
                             o.type = change.value.item,
@@ -108,8 +107,8 @@ class Server {
                                     text: change.value.message,
                                     id: change.value.comment_id
                                 }
-                                o.tools = new CommentTools(that.config, o.comment, o.user)
-                                emitter.emit('comment', o, change)
+                                o.tools = new CommentTools(that.config, o.comment, o.user, that.emitter)
+                                that.emitter.emit('comment', o, change)
                             }
                         })
                     }
@@ -124,7 +123,7 @@ class Server {
         logger.info(`Verify token: ${this.verify_token}`)
 
         return {
-            bot: emitter,
+            bot: that.emitter,
             server: app
         }
     }

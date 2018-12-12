@@ -8,6 +8,8 @@ const MessageGenerator = require('./models/Generator.js')
 const Broadcast = require('./models/Broadcast.js')
 const MessageFrame = require('./models/MessageFrame.js')
 
+const emitter = require('./modules/emitter')
+
 class Incredbot {
     constructor(config) {
         config = config || {}
@@ -15,18 +17,18 @@ class Incredbot {
         this.config.api_version = this.config.api_version || 'v2.11'
 
         this.access_token = config.access_token
-        this.Server = new Server(config)
-        this.send = new Sender(config)
+        this.Server = new Server(config, emitter)
+        this.send = new Sender(config, null, emitter)
         this.Helpers = new Helpers()
-        this.Typer = new Typer(config)
-        this.upload = new Uploader(config)
+        this.Typer = new Typer(config, emitter)
+        this.upload = new Uploader(config, emitter)
         this.Message = new MessageGenerator(config)
-        this.broadcast = new Broadcast(config)
+        this.broadcast = new Broadcast(config, emitter)
         this.Frame = MessageFrame
     }
 
     User(messenger_id) {
-        return new User(messenger_id, this.config, new Sender(this.config, messenger_id))
+        return new User(messenger_id, this.config, new Sender(this.config, messenger_id, emitter), emitter)
     }
 }
 

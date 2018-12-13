@@ -2,6 +2,68 @@
 
 **IMPORTANT!** Incredbot is still under development, but it was successfully used for some projects!
 
+-   [What is incredbot?](#what-is-incredbot-)
+-   [Including](#including)
+    -   [Configuration options](#configuration-options)
+-   [Server](#server)
+    -   [Starting server](#starting-server)
+    -   [Catching events](#catching-events)
+    -   [Server events](#server-events)
+    -   [Incredbot Message vs Raw Message](#incredbot-message-vs-raw-message)
+-   [Sender](#sender)
+    -   [Methods](#methods)
+        -   [`text(message, options)`](#-text-message--options--)
+        -   [`quick_replies(message, replies, options)`](#-quick-replies-message--replies--options--)
+        -   [`buttons(text, buttons, options)`](#-buttons-text--buttons--options--)
+        -   [`attachment(type, url, options)`](#-attachment-type--url--options--)
+        -   [`generic(elements, options)`](#-generic-elements--options--)
+-   [Helpers](#helpers)
+    -   [Button](#button)
+    -   [Generic Message](#generic-message)
+    -   [Get Started Button](#get-started-button)
+    -   [Greeting](#greeting)
+    -   [Quick Reply](#quick-reply)
+-   [User object](#user-object)
+    -   [Get user data](#get-user-data)
+    -   [Send message](#send-message)
+-   [Static elements](#static-elements)
+    -   [`incredbot.send.setting(data)`](#-incredbotsendsetting-data--)
+        -   [Greeting](#greeting-1)
+        -   [Get Started Button](#get-started-button-1)
+        -   [Persistent Menu](#persistent-menu)
+-   [Natural typing](#natural-typing)
+-   [Generator Module](#generator-module)
+    -   [Supported types](#supported-types)
+        -   [Text](#text)
+        -   [Quick Replies](#quick-replies)
+        -   [Buttons](#buttons)
+        -   [Generic](#generic)
+    -   [Frame class](#frame-class)
+-   [Broadcast API](#broadcast-api)
+    -   [Create Creative Message](#create-creative-message)
+    -   [Create label](#create-label)
+    -   [List labels](#list-labels)
+    -   [Delete label](#delete-label)
+    -   [Assign label to user](#assign-label-to-user)
+    -   [Remove label from user](#remove-label-from-user)
+    -   [List labels assigned to users](#list-labels-assigned-to-users)
+    -   [List broadcasts](#list-broadcasts)
+    -   [Get broadcast info](#get-broadcast-info)
+    -   [Cancel planned broadcast](#cancel-planned-broadcast)
+    -   [Send broadcast](#send-broadcast)
+        -   [Options](#options)
+    -   [Start broadcast size estimationId](#start-broadcast-size-estimationid)
+    -   [Get estimation results](#get-estimation-results)
+    -   [Get metrics of broadcast](#get-metrics-of-broadcast)
+-   [Comments interaction](#comments-interaction)
+    -   [Private Reply](#private-reply)
+-   [Uploader module](#uploader-module)
+    -   [Upload from URL](#upload-from-url)
+-   [Examples](#examples)
+    -   [Echo bot full example](#echo-bot-full-example)
+-   [License](#license)
+-   [About me 👨🏻‍💻](#about-me--------)
+
 ## What is incredbot?
 
 Incredbot is library which allows you to easily build Facebook Messenger bot using Messenger Platform API with async/await syntax. Library provides server for listening for events from messenger and set of function and helpers for sending messages as simple as possible.
@@ -561,9 +623,11 @@ bot.on('comment', async (comment, raw) => {
 ```
 
 ## Uploader module
+
 Module for uploading attachments via Attachments API
 
 ### Upload from URL
+
 `incredbot.upload.fromUrl(type, url)`
 
 Sends attachment upload request and return uploaded attachment ID. Type param must be supported by Attachments API.

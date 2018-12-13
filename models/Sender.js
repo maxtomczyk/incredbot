@@ -48,10 +48,12 @@ class Sender {
     text(text, options) {
         if (!text) throw createError('Message text can\'t be empty!')
 
-        options = options || {}
-        options.text = text
-        options.recipient_id = this.recipient_id || options.recipient_id
-        let message = new MessageFrame(new MessageBase(options), options)
+        let optionsCopy = {}
+        if (options) Object.assign(optionsCopy, options)
+        else optionsCopy = {}
+        optionsCopy.text = text
+        optionsCopy.recipient_id = this.recipient_id || options.recipient_id
+        let message = new MessageFrame(new MessageBase(optionsCopy), optionsCopy)
 
         return this.raw(message)
     }
@@ -59,26 +61,33 @@ class Sender {
     quick_replies(text, replies, options) {
         if (!text) throw createError('Message text can\'t be empty!')
 
-        options = options || {}
-        options.text = text
-        options.recipient_id = this.recipient_id || options.recipient_id
-        options.replies = replies
+        let optionsCopy = {}
+        if (options) Object.assign(optionsCopy, options)
+        else optionsCopy = {}
+        optionsCopy.text = text
+        optionsCopy.recipient_id = this.recipient_id || options.recipient_id
+        optionsCopy.replies = replies
 
-        let message = new MessageFrame(new MessageBase(options), options)
+        let message = new MessageFrame(new MessageBase(optionsCopy), optionsCopy)
 
         return this.raw(message)
     }
 
     buttons(text, buttons, replies, options) {
         if (!text) throw createError('Message text can\'t be empty!')
-        options = options || {}
-        if (!Array.isArray(replies)) options = replies || options
-        else options.quick_replies = replies
-        options.text = text
-        options.recipient_id = this.recipient_id || options.recipient_id
-        options.buttons = buttons
+        let optionsCopy = {}
 
-        let message = new MessageFrame(new TemplateBase(options), options)
+        if (options) Object.assign(optionsCopy, options)
+        else if (!Array.isArray(replies) && typeof (replies) === 'object') Object.assign(optionsCopy, replies)
+        else {
+            optionsCopy.quick_replies = replies
+        }
+
+        optionsCopy.text = text
+        optionsCopy.recipient_id = this.recipient_id || optionsCopy.recipient_id
+        optionsCopy.buttons = buttons
+
+        let message = new MessageFrame(new TemplateBase(optionsCopy), optionsCopy)
 
         return this.raw(message)
     }
@@ -94,12 +103,13 @@ class Sender {
     }
 
     generic(elements, options) {
-        options = options || {}
-        options.recipient_id = this.recipient_id || options.recipient_id
-        options.generics = elements
+        let optionsCopy = {}
+        if (options) Object.assign(optionsCopy, options)
+        else optionsCopy = {}
+        optionsCopy.recipient_id = this.recipient_id || options.recipient_id
+        optionsCopy.generics = elements
 
-        let message = new MessageFrame(new TemplateBase(options), options)
-
+        let message = new MessageFrame(new TemplateBase(optionsCopy), optionsCopy)
         return this.raw(message)
     }
 

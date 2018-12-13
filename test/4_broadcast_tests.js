@@ -3,14 +3,25 @@ const config = require('./config')
 const incredbot = new Incredbot(config.incredbot)
 const expect = require('chai').expect
 const should = require('chai').should()
+const axios = require('axios')
 
 describe('Broadcast Class', function () {
     let labelId = null
+    let labelIdToDelete = null
     let creativeId = null
     let creativeId2 = null
     let broadcastId = null
     let estimationId = null
     this.timeout(8000)
+
+    before(async () => {
+        let list = await incredbot.broadcast.listLabels()
+        list.data.map(label => {
+            if(label.name === config.testLabelName) labelIdToDelete = label.id
+        })
+        if(labelIdToDelete) await axios.delete(`https://graph.facebook.com/v3.2/${labelIdToDelete}?access_token=${incredbot.access_token}`)
+    })
+
     it('Should create messages with createMessage()', async () => {
         creativeId = await incredbot.broadcast.createMessage(new incredbot.Message.Text('Testing...'))
         creativeId2 = await incredbot.broadcast.createMessage(new incredbot.Message.Text('Testing 2...'))

@@ -62,3 +62,10 @@ describe('Sender Class', function () {
         await incredbot.send.setting(setting)
     })
 })
+
+describe('Uploader module', function () {
+    it('Should upload attachment from URL and get it\'s ID', async () => {
+        const id = await incredbot.upload.fromUrl('image', config.attachmentUrl)
+        expect(id).to.be.an('string')
+    })
+})

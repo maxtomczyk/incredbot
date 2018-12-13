@@ -18,14 +18,14 @@ class QuickReplies extends Text {
 
 class Buttons extends TemplateBase {
     constructor(text, buttons, quick_replies, options) {
-        options = options || {}
+        let optionsCopy = options || {}
         const arr = !Array.isArray(quick_replies)
-        if (arr) options = quick_replies
-        options.text = text
-        options.buttons = buttons
-        if (!arr) options.quick_replies = quick_replies
+        if (arr) optionsCopy = quick_replies || {}
+        optionsCopy.text = text
+        optionsCopy.buttons = buttons
+        if (!arr) optionsCopy.quick_replies = quick_replies
 
-        super(options)
+        super(optionsCopy)
     }
 }
 

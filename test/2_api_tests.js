@@ -5,11 +5,11 @@ const expect = require('chai').expect
 const should = require('chai').should()
 
 describe('User Object', function () {
-    it('should correctly fetch user data', async () => {
+    it('Should correctly fetch user data', async () => {
         const user = await incredbot.User(config.testUserId).getData()
         expect(user).to.be.an('object')
     })
-    it('should send message to user', async () => {
+    it('Should send message to user', async () => {
         const user = await incredbot.User(config.testUserId).send.text('Testing...')
         expect(user).to.be.an('object')
     })
@@ -40,25 +40,25 @@ describe('Sender Class', function () {
 
     const cards = [card, card, card]
 
-    it('should send message via text() method', async () => {
+    it('Should send message via text() method', async () => {
         await incredbot.send.text('Testing text method...', options)
     })
-    it('should send message via quick_replies() method', async () => {
+    it('Should send message via quick_replies() method', async () => {
         await incredbot.send.quick_replies('Testing quick_replies method...', qrs, options)
     })
-    it('should send message via buttons() method', async () => {
+    it('Should send message via buttons() method', async () => {
         await incredbot.send.buttons('Testing buttons method...', buttons, options)
     })
-    it('should send message (with quick replpies) via buttons() method', async () => {
+    it('Should send message (with quick replpies) via buttons() method', async () => {
         await incredbot.send.buttons('Testing buttons (with quick_replies) method...', buttons, qrs, options)
     })
-    it('should send message via generic() method', async () => {
+    it('Should send message via generic() method', async () => {
         await incredbot.send.generic(cards, options)
     })
-    it('should send attachment via attachment() method', async () => {
+    it('Should send attachment via attachment() method', async () => {
         await incredbot.send.attachment('image', config.attachmentUrl, options)
     })
-    it('should send settings via setting() method', async() => {
+    it('Should send settings via setting() method', async() => {
         await incredbot.send.setting(setting)
     })
 })

@@ -1,9 +1,8 @@
-const randomstring = require('randomstring')
 const express = require('express')
 const bodyParser = require('body-parser')
+const randomize = require('../modules/randomize')
 
-const logger = require('../modules/winston')
-
+const Logger = require('../modules/logger')
 const Sender = require('./Sender.js')
 const CommentTools = require('./CommentTools.js')
 
@@ -18,8 +17,9 @@ let that = null
 class Server {
     constructor(config, emitter) {
         this.config = config
-        this.verify_token = randomstring.generate(10)
+        this.verify_token = randomize.string(10)
         this.emitter = emitter
+        this.log = new Logger(this.config, 'SERVER')
         that = this
     }
 
@@ -31,10 +31,10 @@ class Server {
 
             if (mode && token) {
                 if (mode === 'subscribe' && token === this.verify_token) {
-                    logger.info('Webhook connected!')
+                    this.log.info('Webhook connected!')
                     res.status(200).send(challenge)
                 } else {
-                    logger.warn('Webhook connect try with incorrect token.')
+                    this.log.warn('Webhook connect try with incorrect token.')
                     res.sendStatus(403)
                 }
             }
@@ -120,7 +120,7 @@ class Server {
             }
         })
 
-        logger.info(`Verify token: ${this.verify_token}`)
+        this.log.info(`Verify token: ${this.verify_token}`)
 
         return {
             bot: that.emitter,

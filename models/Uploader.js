@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const createError = require('../modules/create_error.js')
+const createError = require('../modules/create_error')
 
 class Uploader {
     constructor(config, emitter) {

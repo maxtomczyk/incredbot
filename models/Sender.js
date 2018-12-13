@@ -5,7 +5,7 @@ const TemplateBase = require('./TemplateBase.js')
 const Attachment = require('./AttachmentMessage.js')
 const Typer = require('./Typer.js')
 
-const createError = require('../modules/create_error.js')
+const createError = require('../modules/create_error')
 
 let that = null
 

@@ -1,4 +1,4 @@
-const createError = require('../../modules/create_error.js')
+const createError = require('../../modules/create_error')
 
 class Button {
     constructor(type, title, payload) {

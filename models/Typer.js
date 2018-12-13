@@ -1,7 +1,7 @@
 const axios = require('axios')
 
-const createError = require('../modules/create_error.js')
-const delay = require('../modules/delay.js')
+const createError = require('../modules/create_error')
+const delay = require('../modules/delay')
 
 class Typer {
     constructor(options, emitter) {

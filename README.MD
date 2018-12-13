@@ -81,12 +81,13 @@ Configuration object should be passed like `new Incredbot(configObject)`.
 
 #### Configuration options
 
-| Name                   | Descrition                                       | Type   | Default |
-| ---------------------- | ------------------------------------------------ | ------ | ------- |
-| `access_token`         | App's access token for desired page              | string | null    |
-| `api_version`          | Graph API version to use inrequests              | string | 'v2.11' |
-| `natural_typing`       | Enable or disable natural typing feature         | bool   | true    |
-| `natural_typing_speed` | Speed of message typing in characters per second | int    | 50      |
+| Name                   | Descrition                                         | Type   | Default |
+| ---------------------- | -------------------------------------------------- | ------ | ------- |
+| `access_token`         | App's access token for desired page                | string | null    |
+| `api_version`          | Graph API version to use inrequests                | string | 'v2.11' |
+| `natural_typing`       | Enable or disable natural typing feature           | bool   | true    |
+| `natural_typing_speed` | Speed of message typing in characters per second   | int    | 50      |
+| `log_level`            | Logging level, one of: debug, info, warning, error | string | 'debug' |
 
 ## Server
 

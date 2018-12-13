@@ -81,13 +81,14 @@ Configuration object should be passed like `new Incredbot(configObject)`.
 
 #### Configuration options
 
-| Name                   | Descrition                                         | Type   | Default |
-| ---------------------- | -------------------------------------------------- | ------ | ------- |
-| `access_token`         | App's access token for desired page                | string | null    |
-| `api_version`          | Graph API version to use inrequests                | string | 'v2.11' |
-| `natural_typing`       | Enable or disable natural typing feature           | bool   | true    |
-| `natural_typing_speed` | Speed of message typing in characters per second   | int    | 50      |
-| `log_level`            | Logging level, one of: debug, info, warning, error | string | 'debug' |
+| Name                   | Descrition                                          | Type   | Default |
+| ---------------------- | --------------------------------------------------- | ------ | ------- |
+| `access_token`         | App's access token for desired page                 | string | null    |
+| `api_version`          | Graph API version to use inrequests                 | string | 'v2.11' |
+| `natural_typing`       | Enable or disable natural typing feature            | bool   | true    |
+| `natural_typing_speed` | Speed of message typing in characters per second    | int    | 50      |
+| `log_level`            | Logging level, one of: debug, info, warning, error or off  | string | 'debug' |
+| `log_to_console`       | Enables or disables incredbot logger console output | bool   | true    |
 
 ## Server
 
@@ -128,6 +129,7 @@ bot.on('text', async (message, raw) => {
 | ---------------- | ------------------------------------------------------------ | -------------------------------- |
 | request_incoming | Every request to your webhook                                | `body`, `request`                |
 | request_outgoing | Every request sent from bot via incredbot library            | `body`, `response`               |
+| log              | Any log from incredbot (except throwed errors)               | `logObject`                      |
 | message_sent     | Every message sent from bot via incredbot library            | `body`, `response`               |
 | entry            | Each entry in received object                                | `entry`                          |
 | echo             | Any message sent by bot (every message with `is_echo: true`) | `incredbotMessage`, `rawMessage` |

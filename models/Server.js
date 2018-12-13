@@ -19,7 +19,7 @@ class Server {
         this.config = config
         this.verify_token = randomize.string(10)
         this.emitter = emitter
-        this.log = new Logger(this.config, 'SERVER')
+        this.log = new Logger(this.config, 'SERVER', emitter)
         that = this
     }
 
@@ -44,7 +44,7 @@ class Server {
             let body = req.body
             that.emitter.emit('request_incoming', body, req)
             if (body.object === 'page') {
-                body.entry.forEach(function(entry) {
+                body.entry.forEach(function (entry) {
                     that.emitter.emit('entry', entry)
                     if (entry.messaging) {
                         entry.messaging.forEach(message => {
@@ -99,8 +99,8 @@ class Server {
                             that.emitter.emit('change', change)
                             let o = {}
                             o.user = change.value.from,
-                            o.type = change.value.item,
-                            o.created_time = change.value.created_time
+                                o.type = change.value.item,
+                                o.created_time = change.value.created_time
 
                             if (o.type === 'comment') {
                                 o.comment = {
@@ -120,7 +120,10 @@ class Server {
             }
         })
 
-        this.log.info(`Verify token: ${this.verify_token}`)
+        // Timeout needed to set event listener outside this file
+        setTimeout(function () {
+            that.log.info(`Verify token: ${that.verify_token}`)
+        }, 1000)
 
         return {
             bot: that.emitter,

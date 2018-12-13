@@ -2,43 +2,76 @@ const levelsNumbers = {
     debug: 4,
     info: 3,
     warning: 2,
-    error: 1
+    error: 1,
+    off: 0
 }
 
 class Logger {
-    constructor(config, moduleName) {
+    constructor(config, moduleName, emitter) {
         this.moduleName = moduleName
         this.logLevel = config.log_level || 'debug'
+        this.logToConsole = config.log_to_console
+        if (this.logToConsole === undefined) this.logToConsole = true
         this.logLevelN = levelsNumbers[this.logLevel]
-        if (!this.logLevelN) {
-            this.logLevelN = levelsNumbers.debug
-            console.log('xf')
-            this.warn(`Logging level ${this.logLevel} not supported. Setting level to debug`)
-        }
+        this.emitter = emitter
     }
 
     debug(msg) {
+        if (this.logLevelN < levelsNumbers.debug) return
         const string = `[INCREDBOT][${this.moduleName} MODULE][DEBUG] ${msg}`
-        this.logToConsole(string)
+        const o = {
+            moduleName: this.moduleName,
+            level: this.logLevel,
+            message: msg
+        }
+        this.emitEvent(o)
+        this.logToConsoleFunction(string)
     }
 
     info(msg) {
+        if (this.logLevelN < levelsNumbers.info) return
         const string = `[INCREDBOT][${this.moduleName} MODULE][INFO] ${msg}`
-        this.logToConsole(string)
+        const o = {
+            moduleName: this.moduleName,
+            level: this.logLevel,
+            message: msg
+        }
+        this.emitEvent(o)
+        this.logToConsoleFunction(string)
     }
 
     warn(msg) {
+        if(this.logLevelN < levelsNumbers.warning) return
         const string = `[INCREDBOT][${this.moduleName} MODULE][WARNING] ${msg}`
-        this.logToConsole(string)
+        const o = {
+            moduleName: this.moduleName,
+            level: this.logLevel,
+            message: msg
+        }
+        this.emitEvent(o)
+        this.logToConsoleFunction(string)
     }
 
     error(msg) {
+        if(this.logLevelN < levelsNumbers.error) return
+
         const string = `[INCREDBOT][${this.moduleName} MODULE][ERROR] ${msg}`
-        this.logToConsole(string)
+        const o = {
+            moduleName: this.moduleName,
+            level: this.logLevel,
+            message: msg
+        }
+        this.emitEvent(o)
+        this.logToConsoleFunction(string)
     }
 
-    logToConsole(str) {
+    logToConsoleFunction(str) {
+        if (!this.logToConsole) return
         console.log(str)
+    }
+
+    emitEvent(o) {
+        this.emitter.emit('log', o)
     }
 }
 

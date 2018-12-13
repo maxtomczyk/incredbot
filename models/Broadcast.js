@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const logger = require('../modules/winston')
+const createError = require('../modules/create_error.js')
 
 let that = null
 
@@ -26,8 +26,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', messages, data)
             return data.data.message_creative_id
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -40,8 +39,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', name, data)
             return data.data.id
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -51,8 +49,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', null, data)
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -63,8 +60,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', null, data)
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -78,8 +74,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', o, data)
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -90,8 +85,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', null, data)
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -102,8 +96,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', null, data)
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -113,8 +106,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', null, data)
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -126,8 +118,7 @@ class Broadcast {
 
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -141,8 +132,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', o, data)
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -162,8 +152,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', options, data)
             return data.data.broadcast_id
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -177,8 +166,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', options, data)
             return data.data.reach_estimation_id
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -190,8 +178,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', null, data)
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 
@@ -203,8 +190,7 @@ class Broadcast {
             that.emitter.emit('request_outgoing', null, data)
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 }

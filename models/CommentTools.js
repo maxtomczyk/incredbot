@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const logger = require('../modules/winston')
+const createError = require('../modules/create_error.js')
 
 let that = null
 
@@ -23,8 +23,7 @@ class CommentTools {
             that.emitter.emit('request_outgoing', body, data)
             return data.data
         } catch (e) {
-            logger.error(e)
-            throw e
+            throw createError(e)
         }
     }
 }

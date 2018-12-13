@@ -1,5 +1,4 @@
 const isUrl = require('../modules/is_url')
-const logger = require('../modules/winston')
 
 class Message {
     constructor(options) {

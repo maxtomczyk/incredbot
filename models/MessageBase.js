@@ -1,5 +1,3 @@
-const logger = require('../modules/winston')
-
 class Message {
     constructor(options) {
         if (options.text) this.text = options.text

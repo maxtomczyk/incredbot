@@ -1,12 +1,12 @@
 const axios = require('axios')
 
-const logger = require('../modules/winston')
+const createError = require('../modules/create_error.js')
 
 let that = null
 
 class User {
     constructor(messenger_id, config, sender, emitter) {
-        if (!messenger_id) logger.warn('You must pass messenger id of user!')
+        if (!messenger_id) throw createError('You must pass messenger id of user!')
         this.config = config || {}
         this.messenger_id = messenger_id
         this.api_url = `https://graph.facebook.com/${config.api_version}/${this.messenger_id}`
@@ -24,7 +24,7 @@ class User {
 
             return data.data
         } catch (e) {
-            logger.error(e)
+            throw createError(e)
         }
     }
 }

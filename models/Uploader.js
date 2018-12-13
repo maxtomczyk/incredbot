@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-let that = null
+const createError = require('../modules/create_error.js')
 
 class Uploader {
     constructor(config, emitter) {
@@ -9,33 +9,28 @@ class Uploader {
         this.api_version = config.api_version
         this.api_url = `https://graph.facebook.com/${this.api_version}/me/message_attachments?access_token=${this.access_token}`
         this.emitter = emitter
-        that = this
     }
 
     async fromUrl(type, url) {
-        let o = {
-            message: {
-                attachment: {
-                    type: type,
-                    payload: {
-                        is_reusable: true,
-                        url: url
+        try {
+            let o = {
+                message: {
+                    attachment: {
+                        type: type,
+                        payload: {
+                            is_reusable: true,
+                            url: url
+                        }
                     }
                 }
             }
+
+            const response = await axios.post(this.api_url, o)
+            this.emitter.emit('request_outgoing', o, response)
+            return response.data.attachment_id
+        } catch (e) {
+            throw createError(e)
         }
-
-        return new Promise((resolve, reject) => {
-            axios.post(this.api_url, o)
-                .then(res => {
-                    that.emitter.emit('request_outgoing', o, res)
-                    resolve(res.data.attachment_id)
-                })
-                .catch(e => {
-                    reject(e)
-                })
-
-        })
     }
 }
 

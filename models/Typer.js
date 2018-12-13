@@ -1,52 +1,47 @@
 const axios = require('axios')
 
-let that = null
+const createError = require('../modules/create_error.js')
+const delay = require('../modules/delay.js')
 
 class Typer {
     constructor(options, emitter) {
         this.api_url = options.api_url || `https://graph.facebook.com/${options.api_version}/me/messages?access_token=${options.access_token}`
         this.emitter = emitter
-        that = this
     }
 
-    on(id, time) {
-        return new Promise((resolve, reject) => {
+    async on(id, time) {
+        try {
             const body = {
                 recipient: {
                     id: id
                 },
                 sender_action: 'typing_on'
             }
-            axios.post(this.api_url, body)
-                .then((data) => {
-                    that.emitter.emit('request_outgoing', body, data)
-                    setTimeout(() => {
-                        resolve(data)
-                    }, time)
-                })
-                .catch((err) => {
-                    reject(err)
-                })
-        })
+
+            const response = await axios.post(this.api_url, body)
+            this.emitter.emit('request_outgoing', body, response)
+            await delay(time)
+            return response
+        } catch (e) {
+            throw createError(e)
+        }
     }
 
-    off(id) {
-        return new Promise((resolve, reject) => {
+    async off(id) {
+        try {
             const body = {
                 recipient: {
                     id: id
                 },
                 sender_action: 'typing_off'
             }
-            axios.post(this.api_url, body)
-                .then((data) => {
-                    that.emitter.emit('request_outgoing', body, data)
-                    resolve(data)
-                })
-                .catch((err) => {
-                    reject(err)
-                })
-        })
+
+            const response = await axios.post(this.api_url, body)
+            this.emitter.emit('request_outgoing', body, response)
+            return response
+        } catch (e) {
+            throw createError(e)
+        }
     }
 }
 

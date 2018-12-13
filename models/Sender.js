@@ -6,6 +6,8 @@ const TemplateBase = require('./TemplateBase.js')
 const Attachment = require('./AttachmentMessage.js')
 const Typer = require('./Typer.js')
 
+const createError = require('../modules/create_error.js')
+
 let that = null
 
 class Sender {
@@ -25,18 +27,16 @@ class Sender {
     }
 
     async raw(message) {
-        if (message.message.text && this.natural_typing) await this.typing.on(message.recipient.id, this.calculateTypingTime(message.message.text))
-        return new Promise((resolve, reject) => {
-            axios.post(this.api_url, message)
-                .then(res => {
-                    that.emitter.emit('request_outgoing', message, res)
-                    that.emitter.emit('message_sent', message, res)
-                    resolve(res)
-                })
-                .catch(err => {
-                    reject(err)
-                })
-        })
+        try {
+            if (message.message.text && this.natural_typing) await this.typing.on(message.recipient.id, this.calculateTypingTime(message.message.text))
+
+            const response = await axios.post(this.api_url, message)
+            this.emitter.emit('request_outgoing', message, response)
+            this.emitter.emit('message_sent', message, response)
+            return response
+        } catch (e) {
+            throw createError(e)
+        }
     }
 
     calculateTypingTime(text) {
@@ -73,7 +73,7 @@ class Sender {
     buttons(text, buttons, replies, options) {
         if (!text) return logger.error('Message text can\'t be empty!')
         options = options || {}
-        if(!Array.isArray(replies)) options = replies || options
+        if (!Array.isArray(replies)) options = replies || options
         else options.quick_replies = replies
         options.text = text
         options.recipient_id = this.recipient_id || options.recipient_id
@@ -84,17 +84,14 @@ class Sender {
         return this.raw(message)
     }
 
-    setting(data) {
-        return new Promise((resolve, reject) => {
-            axios.post(this.setting_url, data)
-                .then(res => {
-                    that.emitter.emit('request_outgoing', data, res)
-                    resolve(res)
-                })
-                .catch(err => {
-                    reject(err)
-                })
-        })
+    async setting(data) {
+        try {
+            const response = await axios.post(this.setting_url, data)
+            this.emitter.emit('request_outgoing', data, response)
+            return response
+        } catch (e) {
+            throw createError(e)
+        }
     }
 
     generic(elements, options) {

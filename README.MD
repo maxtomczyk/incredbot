@@ -575,7 +575,7 @@ Params:
 | `notification_type` | Type of notification that broadcast will trigger                                  | 'REGULAR'                      |
 | `schedule_time`     | Time when facebook should send your broadcast. ISO-8601 or Unix timestamp format. | undefined                      |
 
-### Start broadcast size estimationId
+### Start broadcast size estimation
 
 `incredbot.broadcast.startEstimation(labelId)`
 

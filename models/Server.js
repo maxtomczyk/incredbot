@@ -34,7 +34,7 @@ class Server {
                     this.log.info('Webhook connected!')
                     res.status(200).send(challenge)
                 } else {
-                    this.log.warn('Webhook connect try with incorrect token.')
+                    this.log.warn('Webhook verification failed. Missing or invalid verify token.')
                     res.sendStatus(403)
                 }
             }
@@ -122,7 +122,7 @@ class Server {
 
         // Timeout needed to set event listener outside this file
         setTimeout(function () {
-            that.log.info(`Verify token: ${that.verify_token}`)
+            that.log.info(`Webhhok server is up. Verify token: ${that.verify_token}`)
         }, 1000)
 
         return {

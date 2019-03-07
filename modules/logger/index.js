@@ -21,7 +21,7 @@ class Logger {
         const string = `[INCREDBOT][${this.moduleName} MODULE][DEBUG] ${msg}`
         const o = {
             moduleName: this.moduleName,
-            level: this.logLevel,
+            level: 'debug',
             message: msg
         }
         this.emitEvent(o)
@@ -33,7 +33,7 @@ class Logger {
         const string = `[INCREDBOT][${this.moduleName} MODULE][INFO] ${msg}`
         const o = {
             moduleName: this.moduleName,
-            level: this.logLevel,
+            level: 'info',
             message: msg
         }
         this.emitEvent(o)
@@ -45,7 +45,7 @@ class Logger {
         const string = `[INCREDBOT][${this.moduleName} MODULE][WARNING] ${msg}`
         const o = {
             moduleName: this.moduleName,
-            level: this.logLevel,
+            level: 'warn',
             message: msg
         }
         this.emitEvent(o)
@@ -58,7 +58,7 @@ class Logger {
         const string = `[INCREDBOT][${this.moduleName} MODULE][ERROR] ${msg}`
         const o = {
             moduleName: this.moduleName,
-            level: this.logLevel,
+            level: 'error',
             message: msg
         }
         this.emitEvent(o)

@@ -24,6 +24,17 @@ class Sender {
         this.emitter = emitter
         that = this
     }
+    
+    async rawNoWait(message) {
+        try {
+            const response = axios.post(this.api_url, message)
+            this.emitter.emit('request_outgoing', message, response)
+            this.emitter.emit('message_sent', message, response)
+            return response
+        } catch (e) {
+            throw createError(e)
+        }
+    }
 
     async raw(message) {
         try {

@@ -38,8 +38,8 @@ class Sender {
 
     async raw(message) {
         try {
-            if (message.message.text && this.natural_typing) await this.typing.on(message.recipient.id, this.calculateTypingTime(message.message.text))
-
+            const text = message.message.text || message.message.attachment.payload.text
+            if (text && this.natural_typing) await this.typing.on(message.recipient.id, this.calculateTypingTime(text))
             const response = await axios.post(this.api_url, message)
             this.emitter.emit('request_outgoing', message, response)
             this.emitter.emit('message_sent', message, response)
